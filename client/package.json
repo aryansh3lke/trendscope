@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "stack": "concurrently \"next dev\" \"cd ../server && fastapi dev main.py\"",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"

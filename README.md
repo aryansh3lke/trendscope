@@ -1,3 +1,3 @@
-# Workify
+# TrendScope
 
-The ultimate job aggregator of all other popular job aggregators with the power of web-scraping.
+An AI tool to gain insight into Twitter (X) trends through web-scraping and natural language processing.

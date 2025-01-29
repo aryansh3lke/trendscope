@@ -1,5 +1,5 @@
 # 1/26/25 CURRENT LIMIT: 819 tweets, 50 tweets per trend, failure on 19th trend
-from seleniumwire import webdriver
+from selenium import webdriver
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -14,7 +14,7 @@ import re
 import time
 import sys
 
-from utils import get_current_formatted_time
+from utils import get_current_formatted_time, write_to_json
 
 SLEEP_INTERVAL = 3
 
@@ -26,12 +26,12 @@ TWITTER_USERNAME = os.getenv("TWITTER_USERNAME")
 TWITTER_PASSWORD = os.getenv("TWITTER_PASSWORD")
 HEADLESS_MODE = os.getenv("HEADLESS_MODE", "True").lower() in ('true', '1', 't')
 
-seleniumwire_options = {
-    "proxy": {
-        "http": ROTATING_PROXY,
-        "https": ROTATING_PROXY
-    }
-}
+# seleniumwire_options = {
+#     "proxy": {
+#         "http": ROTATING_PROXY,
+#         "https": ROTATING_PROXY
+#     }
+# }
 
 options = Options()
 # if HEADLESS_MODE:
@@ -40,16 +40,11 @@ options = Options()
 options.add_argument("--start-minimized")
 options.add_argument("--log-level=0")
 
-# Set up the Chrome driver
-driver = webdriver.Chrome(
-    service=Service(executable_path="./chromedriver"),
-    # seleniumwire_options=seleniumwire_options,
-    options=options
-)
-driver.maximize_window()
-actions = ActionChains(driver)
+driver = None
 
 def login_to_twitter(USERNAME, PASSWORD, EMAIL):
+    global driver
+    
     # Navigate to the Twitter login page
     driver.get("https://x.com/login")
     time.sleep(6)
@@ -83,6 +78,8 @@ def login_to_twitter(USERNAME, PASSWORD, EMAIL):
     print("Twitter login successful.")
 
 def logout_of_twitter():
+    global driver
+    
     # Navigate to the Twitter logout page
     driver.get("https://x.com/logout")
     time.sleep(2)
@@ -94,7 +91,8 @@ def logout_of_twitter():
     print("Twitter logout successful.")
 
 def extract_trend_info(info):
-    trend_dict = { }
+    global driver
+    trend_dict = {}
     
     # Extract trend rank
     trend_dict["rank"] = info[0]
@@ -119,6 +117,7 @@ def extract_trend_info(info):
     return trend_dict
 
 def scrape_tweets():
+    global driver
     print("Scraping tweets...")
     scraped_tweets = set()
     
@@ -155,6 +154,9 @@ def scrape_tweets():
     return list(scraped_tweets)
 
 def scrape_trends(MAX_TRENDS=30):
+    global driver
+    actions = ActionChains(driver)
+    
     # Navigate to the Twitter trends page
     driver.get("https://x.com/explore/tabs/trending")
     time.sleep(6)
@@ -216,21 +218,29 @@ def scrape_trends(MAX_TRENDS=30):
         prev_scroll_height = scroll_height
     
     print("All tweets successfully scraped.")
-        
-def save_data(data, file_path):
-    with open(file_path, "w") as json_file:
-        json.dump(data, json_file, indent=4)
-    print(f"Data saved to {file_path}")
 
-def main():
+def get_latest_trends_data(TRENDS_TO_FETCH=30):
+    global driver
+    
+    # Start the Chrome driver
+    driver = webdriver.Chrome(
+        service=Service(executable_path="./chromedriver"),
+        options=options
+    )
+    driver.maximize_window()
+
+    # Login to Twitter
     login_to_twitter(TWITTER_USERNAME, TWITTER_PASSWORD, TWITTER_EMAIL)
+    
+    # Scrape the trend data
     trend_data = {
-        "data": scrape_trends(10)
-        "timestamp": get_current_formatted_time()
+        "data": scrape_trends(TRENDS_TO_FETCH), # fetch the trend data
+        "timestamp": get_current_formatted_time() # fetch the current time
     }
     
-    save_data(trend_data, "additonal_data.json")
+    # Close the driver
     driver.quit()
+    return trend_data
 
 if __name__ == "__main__":
-    main()
+    write_to_json(get_latest_trends_data(10), "data/trends_data.json")

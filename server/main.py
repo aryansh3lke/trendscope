@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from fastapi_utilities import repeat_every
 from trend_scraper import get_latest_trends_data
 from trend_summarizer import summarize_trends
 from sentiment_analyzer import analyze_sentiments
@@ -9,6 +9,8 @@ app = FastAPI()
 
 timestamp = 0
 
+@app.on_event('startup')
+@repeat_every(seconds=60*60*3) # 3 hours
 def update_data():
     trends_data = get_latest_trends_data(10)
     trend_summaries = summarize_trends(trends_data["data"])

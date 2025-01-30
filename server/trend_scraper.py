@@ -13,6 +13,7 @@ import os
 import re
 import time
 import sys
+from datetime import datetime 
 
 from utils import get_current_formatted_time, write_to_json
 
@@ -235,7 +236,7 @@ def get_latest_trends_data(TRENDS_TO_FETCH=30):
     # Scrape the trend data
     trend_data = {
         "data": scrape_trends(TRENDS_TO_FETCH), # fetch the trend data
-        "timestamp": get_current_formatted_time() # fetch the current time
+        "timestamp": datetime.now().isoformat()
     }
     
     # Close the driver

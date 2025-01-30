@@ -6,7 +6,7 @@ const Timestamp = () => {
   const [serverTimestamp, setServerTimestamp] = useState<string | null>(null);
 
   useEffect(() => {
-    setClientTimestamp(new Date().getTime());
+    setClientTimestamp(new Date().toISOString());
     const fetchTimestamp = async () => {
       fetch("http://localhost:8000/api/fetch-timestamp")
         .then((res) => res.json())

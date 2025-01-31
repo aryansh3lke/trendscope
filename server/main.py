@@ -35,7 +35,7 @@ try:
     # Attempt to connect to MongoDB
     client = MongoClient(os.getenv("MONGODB_URI"), tlsCAFile=certifi.where())
     db = client["TrendScope"]
-    collection = db["TrendData"]
+    collection = db[os.getenv("MONGODB_COLLECTION")]
     db.command("ping")  # Test connection
     print("Connected to MongoDB!")
 except Exception as e:

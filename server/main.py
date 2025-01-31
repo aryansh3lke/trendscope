@@ -37,15 +37,13 @@ try:
     db = client["TrendScope"]
     collection = db["TrendData"]
     db.command("ping")  # Test connection
-
     print("Connected to MongoDB!")
-
 except Exception as e:
     print(f"Failed to connect to MongoDB: {e}")
     sys.exit(1)  # Stop the app if DB connection fails
 
 # @app.on_event('startup')
-# @repeat_every(seconds=60*60*3) # 3 hours
+# @repeat_every(seconds=60*60*2) # 2 hours
 def update_data():
     trends_data = get_latest_trends_data(10)
     trend_summaries = summarize_trends(trends_data["data"])
@@ -55,25 +53,17 @@ def update_data():
         del trends_data["data"][rank]["tweets"]
         trends_data["data"][rank]["summary"] = trend_summaries[rank]
         trends_data["data"][rank]["sentiment_score"] = sentiment_scores[rank]
-        
-    global timestamp
-    timestamp = datetime.fromisoformat(trends_data["timestamp"])
-        
-    write_to_json(trends_data, "data.json")
-    
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
 
-@app.get("/api/save-data")
-async def root():
     try:
         collection.delete_many({})
-        trends_data = read_from_json("data.json")
         collection.insert_one(trends_data)
         return {"message": "TrendData succesfully saved."}
     except Exception as e:
         return {"error": e}
+    
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 @app.get("/api/fetch-timestamp")
 async def fetch_timestamp():

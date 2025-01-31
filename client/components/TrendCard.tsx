@@ -44,7 +44,10 @@ const TrendCard = ({ trend }: { trend: Trend }) => {
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-row items-start justify-between gap-4">
-          <p className="text-xl break-words w-full">
+          <p
+            className="text-xl line-clamp-1"
+            title={trend.rank + ". " + trend.title}
+          >
             {trend.rank}. {trend.title}
           </p>
           <Button variant="outline" size="icon" className="w-7 h-7 p-1">
@@ -52,9 +55,12 @@ const TrendCard = ({ trend }: { trend: Trend }) => {
           </Button>
         </CardTitle>
         <CardDescription className="flex flex-row items-center gap-2">
-          <p className="text-lg">{trend.category}</p>
+          <p className="text-lg" title={trend.category}>
+            {trend.category}
+          </p>
           <Badge
             className="drop-shadow-lg shadow-black gap-1"
+            title={trend.sentiment_score}
             style={{
               backgroundColor: getSentimentColor(trend.sentiment_score),
             }}
@@ -62,7 +68,7 @@ const TrendCard = ({ trend }: { trend: Trend }) => {
             <span className="text-xl shadow-2xl">
               {getSentimentEmoji(trend.sentiment_score)}
             </span>
-            <p className="text-lg">{trend.sentiment_score}</p>
+            <p className="text-lg text-black">{trend.sentiment_score}</p>
           </Badge>
         </CardDescription>
       </CardHeader>

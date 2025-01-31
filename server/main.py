@@ -15,6 +15,8 @@ from sentiment_analyzer import analyze_sentiments
 from utils import write_to_json, read_from_json
 from datetime import datetime
 
+load_dotenv()
+
 app = FastAPI()
 
 # List of allowed origins (frontends)
@@ -42,8 +44,8 @@ except Exception as e:
     print(f"Failed to connect to MongoDB: {e}")
     sys.exit(1)  # Stop the app if DB connection fails
 
-# @app.on_event('startup')
-# @repeat_every(seconds=60*60*2) # 2 hours
+@app.on_event('startup')
+@repeat_every(seconds=60*60*2) # 2 hours
 def update_data():
     trends_data = get_latest_trends_data(10)
     trend_summaries = summarize_trends(trends_data["data"])

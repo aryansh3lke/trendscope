@@ -15,7 +15,7 @@ import time
 import sys
 from datetime import datetime 
 
-from utils import get_current_formatted_time, write_to_json
+from utils import write_to_json
 
 SLEEP_INTERVAL = 3
 
@@ -37,8 +37,8 @@ HEADLESS_MODE = os.getenv("HEADLESS_MODE", "True").lower() in ('true', '1', 't')
 options = Options()
 # if HEADLESS_MODE:
 #     options.add_argument("--headless=new")
-# options.add_argument("--window-size=1920,1080")
-options.add_argument("--start-minimized")
+options.add_argument("--window-size=1920,1080")
+# options.add_argument("--start-minimized")
 options.add_argument("--log-level=0")
 
 driver = None
@@ -244,4 +244,4 @@ def get_latest_trends_data(TRENDS_TO_FETCH=30):
     return trend_data
 
 if __name__ == "__main__":
-    write_to_json(get_latest_trends_data(10), "data/trends_data.json")
+    write_to_json(get_latest_trends_data(10), "trends_data.json")

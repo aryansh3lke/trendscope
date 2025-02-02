@@ -35,8 +35,9 @@ app.add_middleware(
 
 try:
     # Attempt to connect to MongoDB
+    print("Mode:", "Production" if os.getenv("PRODUCTION", "True") == "True" else "Development")
     print("MONGODB_URI:", os.getenv("MONGODB_URI"))
-    client = MongoClient(os.getenv("MONGODB_URI"))
+    client = MongoClient(os.getenv("MONGODB_URI")) if os.getenv("PRODUCTION", True) == "True" else MongoClient(os.getenv("MONGODB_URI"), tlsCAFile=certifi.where())
     db = client["TrendScope"]
     collection = db[os.getenv("MONGODB_COLLECTION")]
     db.command("ping")  # Test connection

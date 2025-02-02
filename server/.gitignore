@@ -4,4 +4,4 @@ __pycache__/
 .env
 *.json
 data
-mongotest.py
+*test.py

@@ -50,6 +50,7 @@ except Exception as e:
 @app.on_event('startup')
 @repeat_every(seconds=60*60*2) # 2 hours
 def update_data():
+    print("Executing cron job at " + str(datetime.now()) + "...")
     trends_data = get_latest_trends_data(10)
     trend_summaries = summarize_trends(trends_data["data"])
     sentiment_scores = analyze_sentiments(trends_data["data"])

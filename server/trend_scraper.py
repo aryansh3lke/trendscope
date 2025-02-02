@@ -222,13 +222,15 @@ def scrape_trends(MAX_TRENDS=30):
 
 def get_latest_trends_data(TRENDS_TO_FETCH=30):
     global driver
-    
+
+    print("Starting driver...")
     # Start the Chrome driver
     driver = webdriver.Chrome(
         service=Service(executable_path="./chromedriver"),
         options=options
     )
     driver.maximize_window()
+    print("Driver opened...")
 
     # Login to Twitter
     login_to_twitter(TWITTER_USERNAME, TWITTER_PASSWORD, TWITTER_EMAIL)

@@ -15,8 +15,9 @@ from sentiment_analyzer import analyze_sentiments
 from utils import write_to_json, read_from_json
 from datetime import datetime
 
-load_dotenv()
+PRODUCTION_MODE = os.getenv("PRODUCTION", "True") == "True"
 
+load_dotenv()
 app = FastAPI()
 
 # List of allowed origins (frontends)
@@ -35,9 +36,9 @@ app.add_middleware(
 
 try:
     # Attempt to connect to MongoDB
-    print("Mode:", "Production" if os.getenv("PRODUCTION", "True") == "True" else "Development")
+    print("Mode:", "Production" if PRODUCTION_MODE else "Development")
     print("MONGODB_URI:", os.getenv("MONGODB_URI"))
-    client = MongoClient(os.getenv("MONGODB_URI")) if os.getenv("PRODUCTION", True) == "True" else MongoClient(os.getenv("MONGODB_URI"), tlsCAFile=certifi.where())
+    client = MongoClient(os.getenv("MONGODB_URI")) if PRODUCTION_MODE else MongoClient(os.getenv("MONGODB_URI"), tlsCAFile=certifi.where())
     db = client["TrendScope"]
     collection = db[os.getenv("MONGODB_COLLECTION")]
     db.command("ping")  # Test connection

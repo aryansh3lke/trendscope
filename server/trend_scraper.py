@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from webdriver_manager.chrome import ChromeDriverManager
 
 from dotenv import load_dotenv
 import json
@@ -13,7 +14,7 @@ import os
 import re
 import time
 import sys
-from datetime import datetime 
+from datetime import datetime
 
 from utils import write_to_json
 
@@ -26,6 +27,7 @@ TWITTER_EMAIL = os.getenv("TWITTER_EMAIL")
 TWITTER_USERNAME = os.getenv("TWITTER_USERNAME")
 TWITTER_PASSWORD = os.getenv("TWITTER_PASSWORD")
 HEADLESS_MODE = os.getenv("HEADLESS_MODE", "True").lower() in ('true', '1', 't')
+CHROMEDRIVER_PATH = os.getenv("CHROMEDRIVER_PATH")
 
 # seleniumwire_options = {
 #     "proxy": {
@@ -34,12 +36,22 @@ HEADLESS_MODE = os.getenv("HEADLESS_MODE", "True").lower() in ('true', '1', 't')
 #     }
 # }
 
+# Headless mode (avoid being detected as a bot)
 options = Options()
-# if HEADLESS_MODE:
-#     options.add_argument("--headless=new")
-options.add_argument("--window-size=1920,1080")
+options.add_argument("--headless=new")
+options.add_argument(
+    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+)
+options.add_argument("--disable-blink-features=AutomationControlled")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")  # Avoid /dev/shm issues
+options.add_argument("--disable-gpu")  # Disable GPU acceleration
+options.add_argument("window-size=1920,1080")
+options.add_argument("--start-maximized")
+
+# options.add_argument("--window-size=1920,1080")
 # options.add_argument("--start-minimized")
-options.add_argument("--log-level=0")
+# options.add_argument("--log-level=0")
 
 driver = None
 
@@ -226,7 +238,7 @@ def get_latest_trends_data(TRENDS_TO_FETCH=30):
     print("Starting driver...")
     # Start the Chrome driver
     driver = webdriver.Chrome(
-        service=Service(executable_path="./chromedriver"),
+        service=(Service(ChromeDriverManager().install())),
         options=options
     )
     driver.maximize_window()

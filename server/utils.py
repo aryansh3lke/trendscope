@@ -1,6 +1,9 @@
 import json
 from openai import OpenAI, OpenAIError
 from dotenv import load_dotenv
+import platform
+import subprocess
+from webdriver_manager.chrome import ChromeDriverManager
 
 load_dotenv()
 client = OpenAI()
@@ -48,6 +51,33 @@ def ask_chatgpt(prompt, system_role):
     except Exception as e:
         return None, {str(e)}
 
+def get_chrome_version():
+    """Returns the Chrome version number as a string."""
+    system = platform.system()
+
+    try:
+        if system == "Darwin":  # macOS
+            output = subprocess.check_output(
+                ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "--version"]
+            )
+        elif system == "Linux":
+            output = subprocess.check_output(["google-chrome", "--version"])
+        else:
+            return "Unknown OS"
+
+        return output.decode("utf-8").strip().split(" ")[-1]  # Extract version number
+    except Exception as e:
+        return f"Could not determine Chrome version: {e}"
+
+def get_chromedriver_version():
+    """Returns the ChromeDriver version number as a string."""
+    try:
+        driver_path = ChromeDriverManager().install()
+        output = subprocess.check_output([driver_path, "--version"])
+        return output.decode("utf-8").strip().split(" ")[1]  # Extract version number
+    except Exception as e:
+        return f"Could not determine ChromeDriver version: {e}"
+    
 def read_from_json(file_path):
     with open(file_path, "r") as json_file:
         return json.load(json_file)

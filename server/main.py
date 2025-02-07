@@ -1,21 +1,24 @@
+# Libraries
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_utilities import repeat_every
 from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
 import os
 import sys
-import certifi
 
 # User defined modules
 from trend_scraper import get_latest_trends_data
 from trend_summarizer import summarize_trends
 from sentiment_analyzer import analyze_sentiments
-from utils import write_to_json, read_from_json
+from utils import get_chrome_version, get_chromedriver_version
 from datetime import datetime
 
+# Env variables
 PRODUCTION_MODE = os.getenv("PRODUCTION", "True") == "True"
+MONGO_URL = os.getenv("MONGO_URL")
+MONGO_DB = os.getenv("MONGO_DB")
+MONGO_COLLECTION = os.getenv("MONGO_COLLECTION")
 
 load_dotenv()
 app = FastAPI()
@@ -34,14 +37,20 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+# Print system information
+print("Mode:", "Production" if PRODUCTION_MODE else "Development")
+print("Python Version:" , sys.version)
+print("Chrome Version:", get_chrome_version())
+print("Chromedriver Version:", get_chromedriver_version())
+print("MONGO_URL:", MONGO_URL)
+print("MONGO_DB:", MONGO_DB)
+print("MONGO_COLLECTION:", MONGO_COLLECTION)
+
 try:
     # Attempt to connect to MongoDB
-    print("Mode:", "Production" if PRODUCTION_MODE else "Development")
-    print("Python Version:" , sys.version)
-    print("MONGODB_URI:", os.getenv("MONGODB_URI"))
-    client = MongoClient(os.getenv("MONGODB_URI")) if PRODUCTION_MODE else MongoClient(os.getenv("MONGODB_URI"), tlsCAFile=certifi.where())
-    db = client["TrendScope"]
-    collection = db[os.getenv("MONGODB_COLLECTION")]
+    client = MongoClient(MONGO_URL)
+    db = client[MONGO_DB]
+    collection = db[MONGO_COLLECTION]
     db.command("ping")  # Test connection
     print("Connected to MongoDB!")
 except Exception as e:
@@ -51,8 +60,8 @@ except Exception as e:
 @app.on_event('startup')
 @repeat_every(seconds=60*60*2) # 2 hours
 def update_data():
-    print("Executing cron job at " + str(datetime.now()) + "...")
-    trends_data = get_latest_trends_data(10)
+    print("Executing trend scrape cron job at " + str(datetime.now()) + "...")
+    trends_data = get_latest_trends_data(3)
     trend_summaries = summarize_trends(trends_data["data"])
     sentiment_scores = analyze_sentiments(trends_data["data"])
     

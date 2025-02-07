@@ -43,9 +43,6 @@ print("Mode:", "Production" if PRODUCTION_MODE else "Development")
 print("Python Version:" , sys.version)
 print("Chrome Version:", get_chrome_version())
 print("Chromedriver Version:", get_chromedriver_version())
-print("MONGO_URL:", MONGO_URL)
-print("MONGO_DB:", MONGO_DB)
-print("MONGO_COLLECTION:", MONGO_COLLECTION)
 
 try:
     # Attempt to connect to MongoDB
@@ -60,10 +57,11 @@ except Exception as e:
 
 @app.on_event('startup')
 @repeat_every(seconds=60*60*2) # 2 hours
-def update_data():
-    print("Executing trend scrape cron job at " + str(datetime.now()) + "...")
-    trends_data = get_latest_trends_data(3)
-    write_to_json(trends_data, "data.json")
+def update_data(TRENDS_TO_FETCH=10):
+    print("Executing scheduled cron job at " + str(datetime.now().isoformat()) + "...")
+
+    print("Scraping trend data...")
+    trends_data = get_latest_trends_data(TRENDS_TO_FETCH)
     print("Summarizing trends...")
     trend_summaries = summarize_trends(trends_data["data"])
     print("Anaylzing sentiments...")
@@ -102,14 +100,5 @@ async def fetch_data():
         trends_data = collection.find_one()
         del trends_data["_id"]
         return {"trends_data": trends_data}
-    except Exception as e:
-        return {"error": e}
-    
-@app.get("/api/clear-data")
-async def clear_data():
-    try:
-        result = collection.delete_many({})
-        print(result)
-        return {"message": "TrendData successfuly cleared."}
     except Exception as e:
         return {"error": e}

@@ -16,6 +16,7 @@ from datetime import datetime
 
 # Env variables
 PRODUCTION_MODE = os.getenv("PRODUCTION", "True") == "True"
+FRONTEND_DOMAIN = os.getenv("FRONTEND_DOMAIN")
 MONGO_URL = os.getenv("MONGO_URL")
 MONGO_DB = os.getenv("MONGO_DB")
 MONGO_COLLECTION = os.getenv("MONGO_COLLECTION")
@@ -26,7 +27,7 @@ app = FastAPI()
 # List of allowed origins (frontends)
 origins = [
     "http://localhost:3000",  # Frontend URL (for local dev)
-    "https://your-frontend-domain.com",  # Production domain
+    FRONTEND_DOMAIN,  # Production domain
 ]
 
 app.add_middleware(

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { TrendsData } from "@/lib/types";
-import { BACKEND_PROXY } from "@/lib/proxy";
+import { NEXT_PUBLIC_BACKEND_PROXY } from "@/lib/proxy";
 import TrendCard from "@/components/TrendCard";
 
 const Trends = () => {
@@ -22,7 +22,7 @@ const Trends = () => {
   }, []);
 
   const compareTimestamps = async (client_timestamp: string = "") => {
-    fetch(BACKEND_PROXY + "/api/fetch-timestamp")
+    fetch(NEXT_PUBLIC_BACKEND_PROXY + "/api/fetch-timestamp")
       .then((res) => res.json())
       .then((data) => {
         if (data.server_timestamp !== client_timestamp) {
@@ -36,7 +36,7 @@ const Trends = () => {
   };
 
   const fetchTrendsData = async () => {
-    fetch(BACKEND_PROXY + "/api/fetch-data")
+    fetch(NEXT_PUBLIC_BACKEND_PROXY + "/api/fetch-data")
       .then((res) => res.json())
       .then((data) => {
         setTrendsData(data["trends_data"]);

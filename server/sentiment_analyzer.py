@@ -18,7 +18,7 @@ def analyze_sentiments(trend_data):
             any text: {trend["tweets"]}
         """
         sentiment_scores[rank] = str(round(float(ask_chatgpt(prompt, SENTIMENT_SYSTEM_ROLE)[0]) * 100, 4)) + "%"
-        print("All sentiment scores succesfully calculated.")
+    print("All sentiment scores succesfully calculated.")
     return sentiment_scores
     
 if __name__ == "__main__":

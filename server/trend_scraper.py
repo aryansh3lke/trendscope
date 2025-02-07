@@ -106,6 +106,12 @@ def logout_of_twitter():
 def extract_trend_info(info):
     global driver
     trend_dict = {}
+
+    # If the trend rank containers characters, it's a special case where a promoted
+    # trend is being displayed, which offsets the trend rank, which we don't care about
+    print("Info[0]:", info[0])
+    if re.match(r"[\D]", info[0]):
+        return None
     
     # Extract trend rank
     trend_dict["rank"] = info[0]
@@ -187,7 +193,10 @@ def scrape_trends(MAX_TRENDS=30):
                 info = [i.strip() for i in re.split(r"[\u00b7\n]", trends[idx].text) if i != ""]
                 trend_number = info[0]
                 if trend_number not in scraped_trends:
-                    scraped_trends[trend_number] = extract_trend_info(info)
+                    trend_info = extract_trend_info(info)
+                    if trend_info is None: # Skip promoted trends
+                        continue
+                    scraped_trends[trend_number] = trend_info
                     print(f"Info added for trend #{trend_number}")
 
                     # Open a new tab for every newly scraped trend

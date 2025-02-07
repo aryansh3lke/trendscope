@@ -11,7 +11,7 @@ import sys
 from trend_scraper import get_latest_trends_data
 from trend_summarizer import summarize_trends
 from sentiment_analyzer import analyze_sentiments
-from utils import get_chrome_version, get_chromedriver_version
+from utils import get_chrome_version, get_chromedriver_version, write_to_json
 from datetime import datetime
 
 # Env variables
@@ -63,7 +63,10 @@ except Exception as e:
 def update_data():
     print("Executing trend scrape cron job at " + str(datetime.now()) + "...")
     trends_data = get_latest_trends_data(3)
+    write_to_json(trends_data, "data.json")
+    print("Summarizing trends...")
     trend_summaries = summarize_trends(trends_data["data"])
+    print("Anaylzing sentiments...")
     sentiment_scores = analyze_sentiments(trends_data["data"])
     
     for rank in trends_data["data"]:

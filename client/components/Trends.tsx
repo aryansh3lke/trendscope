@@ -15,9 +15,12 @@ const Trends = () => {
 
   useEffect(() => {
     fetchTrendsData();
-    const interval = setInterval(() => {
-      compareTimestamps(trendsDataRef.current?.timestamp);
-    }, 5000);
+    const interval = setInterval(
+      () => {
+        compareTimestamps(trendsDataRef.current?.timestamp);
+      },
+      1000 * 60 * 20 // 20 minutes
+    );
 
     return () => clearInterval(interval);
   }, []);

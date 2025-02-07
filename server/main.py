@@ -17,22 +17,16 @@ from datetime import datetime
 # Env variables
 load_dotenv()
 PRODUCTION_MODE = os.getenv("PRODUCTION", "True").lower() in ("true", "t", "1")
-FRONTEND_DOMAIN = os.getenv("FRONTEND_DOMAIN")
+FRONTEND_DOMAINS = os.getenv("FRONTEND_DOMAINS").split(",")
 MONGO_URL = os.getenv("MONGO_URL")
 MONGO_DB = os.getenv("MONGO_DB")
 MONGO_COLLECTION = os.getenv("MONGO_COLLECTION")
 
 app = FastAPI()
 
-# List of allowed origins (frontends)
-origins = [
-    "http://localhost:3000",  # Frontend URL (for local dev)
-    FRONTEND_DOMAIN,  # Production domain
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Specifies the allowed origins
+    allow_origins=FRONTEND_DOMAINS,  # Specifies the allowed origins
     allow_credentials=True,
     allow_methods=["*"],  # Allows all HTTP methods (GET, POST, PUT, DELETE, etc.)
     allow_headers=["*"],  # Allows all headers

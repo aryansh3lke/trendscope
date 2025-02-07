@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Trend } from "@/lib/types";
 import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 const TrendCard = ({ trend }: { trend: Trend }) => {
   const getSentimentColor = (scoreString: string) => {
@@ -50,9 +51,14 @@ const TrendCard = ({ trend }: { trend: Trend }) => {
           >
             {trend.rank}. {trend.title}
           </p>
-          <Button variant="outline" size="icon" className="w-7 h-7 p-1">
-            <ExternalLink />
-          </Button>
+          <Link
+            href={`https://x.com/search?q=${encodeURIComponent(trend.title)}&src=trend_click&vertical=trends`}
+            target="_blank"
+          >
+            <Button variant="outline" size="icon" className="w-7 h-7 p-1">
+              <ExternalLink />
+            </Button>
+          </Link>
         </CardTitle>
         <CardDescription className="flex flex-row items-center gap-2">
           <p className="text-lg" title={trend.category}>

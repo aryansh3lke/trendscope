@@ -15,13 +15,13 @@ from utils import get_chrome_version, get_chromedriver_version, write_to_json
 from datetime import datetime
 
 # Env variables
-PRODUCTION_MODE = os.getenv("PRODUCTION", "True") == "True"
+load_dotenv()
+PRODUCTION_MODE = os.getenv("PRODUCTION", "True").lower() in ("true", "t", "1")
 FRONTEND_DOMAIN = os.getenv("FRONTEND_DOMAIN")
 MONGO_URL = os.getenv("MONGO_URL")
 MONGO_DB = os.getenv("MONGO_DB")
 MONGO_COLLECTION = os.getenv("MONGO_COLLECTION")
 
-load_dotenv()
 app = FastAPI()
 
 # List of allowed origins (frontends)

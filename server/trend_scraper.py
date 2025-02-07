@@ -1,6 +1,4 @@
-# 1/26/25 CURRENT LIMIT: 819 tweets, 50 tweets per trend, failure on 19th trend
 from selenium import webdriver
-from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -9,32 +7,19 @@ from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 
 from dotenv import load_dotenv
-import json
 import os
 import re
 import time
-import sys
 from datetime import datetime
-
 from utils import write_to_json
 
-SLEEP_INTERVAL = 3
+driver = None
 
 # Load environment variables
 load_dotenv()
-ROTATING_PROXY = os.getenv("ROTATING_PROXY")
 TWITTER_EMAIL = os.getenv("TWITTER_EMAIL")
 TWITTER_USERNAME = os.getenv("TWITTER_USERNAME")
 TWITTER_PASSWORD = os.getenv("TWITTER_PASSWORD")
-HEADLESS_MODE = os.getenv("HEADLESS_MODE", "True").lower() in ('true', '1', 't')
-CHROMEDRIVER_PATH = os.getenv("CHROMEDRIVER_PATH")
-
-# seleniumwire_options = {
-#     "proxy": {
-#         "http": ROTATING_PROXY,
-#         "https": ROTATING_PROXY
-#     }
-# }
 
 # Headless mode (avoid being detected as a bot)
 options = Options()
@@ -48,12 +33,6 @@ options.add_argument("--disable-dev-shm-usage")  # Avoid /dev/shm issues
 options.add_argument("--disable-gpu")  # Disable GPU acceleration
 options.add_argument("window-size=1920,1080")
 options.add_argument("--start-maximized")
-
-# options.add_argument("--window-size=1920,1080")
-# options.add_argument("--start-minimized")
-# options.add_argument("--log-level=0")
-
-driver = None
 
 def login_to_twitter(USERNAME, PASSWORD, EMAIL):
     global driver

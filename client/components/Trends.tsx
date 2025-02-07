@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { TrendsData } from "@/lib/types";
 import { NEXT_PUBLIC_BACKEND_PROXY } from "@/lib/proxy";
 import TrendCard from "@/components/TrendCard";
+import { formatTimestamp } from "@/lib/utils";
 
 const Trends = () => {
   const [trendsData, setTrendsData] = useState<TrendsData | null>(null);
@@ -46,9 +47,10 @@ const Trends = () => {
 
   return (
     <div className="flex flex-col justify-center items-center gap-2">
-      <h1 className="font-medium text-5xl mb-4">Trends</h1>
-      <h2 className="font-medium text-xl mb-4">
-        Data last fetched at: {trendsData && trendsData.timestamp}
+      <h1 className="font-medium text-5xl mb-4">The Latest Trends on X</h1>
+      <h2 className="font-medium text-lg mb-4">
+        {trendsData &&
+          "Trends last scoped on " + formatTimestamp(trendsData.timestamp)}
       </h2>
       <div className="grid grid-cols-3 gap-4">
         {trendsData &&

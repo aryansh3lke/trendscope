@@ -1,52 +1,11 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import { TrendsData } from "@/lib/types";
-import { NEXT_PUBLIC_BACKEND_PROXY } from "@/lib/proxy";
 import TrendCard from "@/components/TrendCard";
+import { TrendsData } from "@/lib/types";
 import { formatTimestamp } from "@/lib/utils";
+import { useTrendsData } from "@/context/TrendsContext";
 
 const Trends = () => {
-  const [trendsData, setTrendsData] = useState<TrendsData | null>(null);
-  const trendsDataRef = useRef<TrendsData | null>(trendsData);
-
-  useEffect(() => {
-    trendsDataRef.current = trendsData; // Keep ref updated with latest trendsData
-  }, [trendsData]);
-
-  useEffect(() => {
-    fetchTrendsData();
-    const interval = setInterval(
-      () => {
-        compareTimestamps(trendsDataRef.current?.timestamp);
-      },
-      1000 * 60 * 60 // 1 hour
-    );
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const compareTimestamps = async (client_timestamp: string = "") => {
-    fetch(NEXT_PUBLIC_BACKEND_PROXY + "/api/fetch-timestamp")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.server_timestamp !== client_timestamp) {
-          console.log("Timestamps do not match");
-          fetchTrendsData();
-        } else {
-          console.log("Timestamps match");
-        }
-      })
-      .catch(console.error);
-  };
-
-  const fetchTrendsData = async () => {
-    fetch(NEXT_PUBLIC_BACKEND_PROXY + "/api/fetch-data")
-      .then((res) => res.json())
-      .then((data) => {
-        setTrendsData(data["trends_data"]);
-      })
-      .catch(console.error);
-  };
+  const trendsData: TrendsData | null = useTrendsData();
 
   return (
     <div className="flex flex-col justify-center items-center gap-2">

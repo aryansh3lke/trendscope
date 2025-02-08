@@ -76,17 +76,6 @@ def update_data(TRENDS_TO_FETCH=15):
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-
-@app.get("/api/fetch-timestamp")
-async def fetch_timestamp():
-    try:
-        server_timestamp = collection.find_one()["timestamp"]
-        if server_timestamp:
-            return {"server_timestamp": server_timestamp}
-        else:
-            return {"error": "No data found"}
-    except Exception as e:
-        return {"error": e}
     
 @app.get("/api/fetch-data")
 async def fetch_data():

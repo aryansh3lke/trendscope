@@ -1,11 +1,14 @@
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import Link from "next/link";
 import "./globals.css";
+
 import FaviconUpdater from "@/components/FaviconUpdater";
-import AppLogo from "@/components/AppLogo";
+import Navbar from "@/components/Navbar";
 import VantaBackground from "@/components/VantaBackground";
+
+import { getTrendsData } from "@/lib/data";
+import { TrendsProvider } from "@/context/TrendsContext";
+import { TrendsData } from "@/lib/types";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -22,11 +25,13 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const trendsData: TrendsData = (await getTrendsData())["trends_data"]; // Cached & updated every couple of hours
+
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
@@ -37,31 +42,19 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col gap-5 lg:gap-15 items-center">
-              <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-                <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-                  <div className="flex gap-5 items-center font-semibold">
-                    <Link
-                      className="flex flex-row items-center gap-2 text-3xl"
-                      href={"/"}
-                    >
-                      <AppLogo />
-                      <p>TrendScope</p>
-                    </Link>
+          <TrendsProvider trendsData={trendsData}>
+            <main className="min-h-screen flex flex-col items-center">
+              <div className="flex-1 w-full flex flex-col gap-5 lg:gap-15 items-center">
+                <Navbar />
+                <div className="flex flex-col">
+                  <VantaBackground />
+                  <div className="flex flex-col gap-20 max-w-5xl p-5">
+                    {children}
                   </div>
-                  <ThemeSwitcher />
-                </div>
-              </nav>
-
-              <div className="flex flex-col">
-                <VantaBackground />
-                <div className="flex flex-col gap-20 max-w-5xl p-5">
-                  {children}
                 </div>
               </div>
-            </div>
-          </main>
+            </main>
+          </TrendsProvider>
         </ThemeProvider>
       </body>
     </html>

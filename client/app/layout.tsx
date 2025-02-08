@@ -5,6 +5,7 @@ import Link from "next/link";
 import "./globals.css";
 import FaviconUpdater from "@/components/FaviconUpdater";
 import AppLogo from "@/components/AppLogo";
+import VantaBackground from "@/components/VantaBackground";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -52,8 +53,12 @@ export default function RootLayout({
                   <ThemeSwitcher />
                 </div>
               </nav>
-              <div className="flex flex-col gap-20 max-w-5xl p-5">
-                {children}
+
+              <div className="flex flex-col">
+                <VantaBackground />
+                <div className="flex flex-col gap-20 max-w-5xl p-5">
+                  {children}
+                </div>
               </div>
             </div>
           </main>

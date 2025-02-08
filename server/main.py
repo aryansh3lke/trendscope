@@ -50,7 +50,7 @@ except Exception as e:
     sys.exit(1)  # Stop the app if DB connection fails
 
 @app.on_event('startup')
-@repeat_every(seconds=60*60*2) # 2 hours
+@repeat_every(seconds=60*60*4) # 4 hours
 def update_data(TRENDS_TO_FETCH=10):
     print("Executing scheduled cron job at " + str(datetime.now().isoformat()) + "...")
 

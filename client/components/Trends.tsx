@@ -19,7 +19,7 @@ const Trends = () => {
       () => {
         compareTimestamps(trendsDataRef.current?.timestamp);
       },
-      1000 * 60 * 20 // 20 minutes
+      1000 * 60 * 60 // 1 hour
     );
 
     return () => clearInterval(interval);

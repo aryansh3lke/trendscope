@@ -2,7 +2,7 @@
 
 An AI tool to gain insight into Twitter (X) trends through web-scraping, natural language processing, and abstractive summarization.
 
-Keep up to date with the latest X trends here: [trendscope.fyi](trendscope.fyi)
+Keep up to date with the latest X trends here: [trendscope.fyi](https://trendscope.fyi)
 
 ## Table of Contents
 

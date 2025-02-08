@@ -50,12 +50,14 @@ const Trends = () => {
 
   return (
     <div className="flex flex-col justify-center items-center gap-2">
-      <h1 className="font-medium text-5xl mb-4">The Latest Trends on X</h1>
-      <h2 className="font-medium text-lg mb-4">
+      <h1 className="font-medium text-5xl text-center mb-4">
+        The Latest Trends on X
+      </h1>
+      <h2 className="font-medium text-lg text-center mb-4">
         {trendsData &&
           "Trends last scoped on " + formatTimestamp(trendsData.timestamp)}
       </h2>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {trendsData &&
           Object.keys(trendsData.data).map((rank) => (
             <TrendCard key={rank} trend={trendsData.data[rank]} />

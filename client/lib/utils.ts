@@ -32,3 +32,11 @@ export function formatTimestamp(timestamp: string): string {
 
   return `${month} ${day}${suffix} at ${time}`;
 }
+
+export function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "") // Remove non-alphanumeric characters
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-"); // Remove multiple consecutive hyphens
+}

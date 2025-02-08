@@ -55,7 +55,7 @@ const Trends = () => {
       </h1>
       <h2 className="font-medium text-lg text-center mb-4">
         {trendsData &&
-          "Trends last scoped on " + formatTimestamp(trendsData.timestamp)}
+          "Trends last sniped on " + formatTimestamp(trendsData.timestamp)}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {trendsData &&

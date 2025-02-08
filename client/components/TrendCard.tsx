@@ -46,7 +46,7 @@ const TrendCard = ({ trend }: { trend: Trend }) => {
       <CardHeader>
         <CardTitle className="flex flex-row items-start justify-between gap-4">
           <p
-            className="text-xl line-clamp-1"
+            className="text-xl truncate"
             title={trend.rank + ". " + trend.title}
           >
             {trend.rank}. {trend.title}
@@ -61,7 +61,7 @@ const TrendCard = ({ trend }: { trend: Trend }) => {
           </Link>
         </CardTitle>
         <CardDescription className="flex flex-row items-center gap-2">
-          <p className="text-lg" title={trend.category}>
+          <p className="text-lg truncate" title={trend.category}>
             {trend.category}
           </p>
           <Badge

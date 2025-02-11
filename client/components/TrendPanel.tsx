@@ -24,7 +24,8 @@ const TrendPanel = ({ trend }: { trend: Trend }) => {
         </CardTitle>
         <CardDescription className="flex flex-row items-center gap-2">
           <p className="text-lg truncate" title={trend.category}>
-            {trend.category} • {trend.posts + " posts"}
+            {trend.category}
+            {trend.posts && " • " + trend.posts + " posts"}
           </p>
           <Badge
             className="w-fit drop-shadow-lg shadow-black gap-1"

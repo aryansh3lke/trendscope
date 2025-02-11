@@ -13,7 +13,9 @@ export default function TrendPage() {
   const [trend, setTrend] = useState<Trend | null>(null);
 
   useEffect(() => {
-    if (trendsData) setTrend(trendsData.data[Number(rank)] ?? null);
+    if (trendsData) {
+      setTrend(trendsData.data[Number(rank)] ?? null);
+    }
   }, [trendsData]);
 
   return (

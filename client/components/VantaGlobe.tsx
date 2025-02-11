@@ -6,7 +6,8 @@ import { useTheme } from "next-themes";
 const VantaGlobe = () => {
   const [vantaEffect, setVantaEffect] = useState<any>(null);
   const vantaRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
+  const activeTheme = theme === "system" ? resolvedTheme : theme;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -28,10 +29,10 @@ const VantaGlobe = () => {
             minWidth: 200.0,
             scale: 1.0,
             scaleMobile: 1.0,
-            color: theme === "dark" ? "white" : "black", // Initial dot color based on theme
-            color2: theme === "dark" ? "white" : "black",
+            color: activeTheme === "dark" ? "white" : "black", // Initial dot color based on theme
+            color2: activeTheme === "dark" ? "white" : "black",
             size: 0.7,
-            backgroundColor: theme === "dark" ? "black" : "white",
+            backgroundColor: activeTheme === "dark" ? "black" : "white",
           });
 
           setVantaEffect(effect); // Store the effect reference
@@ -44,7 +45,7 @@ const VantaGlobe = () => {
     return () => {
       if (vantaEffect) vantaEffect.destroy(); // Cleanup the Vanta effect on unmount
     };
-  }, [vantaEffect, theme]); // Re-run when theme or vantaEffect changes
+  }, [vantaEffect, activeTheme]); // Re-run when theme or vantaEffect changes
 
   // Reset the vantaEffect whenever the theme changes
   useEffect(() => {
@@ -52,7 +53,7 @@ const VantaGlobe = () => {
       vantaEffect.destroy();
       setVantaEffect(null); // Reset effect to reinitialize
     }
-  }, [theme]);
+  }, [activeTheme]);
 
   return (
     <div

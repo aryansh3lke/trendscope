@@ -20,7 +20,6 @@ load_dotenv()
 TWITTER_EMAIL = os.getenv("TWITTER_EMAIL")
 TWITTER_USERNAME = os.getenv("TWITTER_USERNAME")
 TWITTER_PASSWORD = os.getenv("TWITTER_PASSWORD")
-
 # Headless mode (avoid being detected as a bot)
 options = Options()
 options.add_argument("--headless=new")
@@ -127,13 +126,16 @@ def scrape_tweets():
         # Acquire the current batch of tweets
         try:
             tweets = driver.find_elements(By.CSS_SELECTOR, '[data-testid="tweetText"]')
-            
+            print("Tweets found:", len(tweets))
+            links = driver.find_elements(By.CSS_SELECTOR, '[class="css-146c3p1 r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-xoduu5 r-1q142lx r-1w6e6rj r-9aw3ui r-3s2u2q r-1loqt21"]')
+            print("Links found:", len(links))
             prev_count = len(scraped_tweets)
             
             # Update the set of scraped tweets
-            for tweet in tweets:
+            for idx, tweet in enumerate(tweets):
                 if tweet.text not in scraped_tweets and len(scraped_tweets) < MAX_TWEETS:
-                    scraped_tweets.add(tweet.text)
+                    scraped_tweets.add((tweet.text, links[idx].get_attribute("href")))
+                    #{"text": tweet.text, "url": links[idx].get_attribute("href")}
                     
             #     Scroll down to the last scraped tweet
             print("Tweets accumulated", len(scraped_tweets))
@@ -148,8 +150,13 @@ def scrape_tweets():
             driver.execute_script("arguments[0].scrollIntoView(true);", tweets[-1])
             time.sleep(0.25)
         except Exception as e:
+            print(e)
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    return list(scraped_tweets)
+        
+    scraped_tweets = list(scraped_tweets)
+    for i in range(len(scraped_tweets)):
+        scraped_tweets[i] = {"text": scraped_tweets[i][0], "url": scraped_tweets[i][1]}
+    return scraped_tweets
 
 def scrape_trends(MAX_TRENDS=30):
     global driver
@@ -246,4 +253,4 @@ def get_latest_trends_data(TRENDS_TO_FETCH=30):
     return trend_data
 
 if __name__ == "__main__":
-    write_to_json(get_latest_trends_data(10), "trends_data.json")
+    write_to_json(get_latest_trends_data(2), "trends_data.json")

@@ -20,6 +20,7 @@ export default function AppLogo() {
         alt="TrendScope Logo"
         width={48}
         height={48}
+        priority
       />
     );
 

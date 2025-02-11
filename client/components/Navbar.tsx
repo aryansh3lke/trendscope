@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AppLogo from "@/components/AppLogo";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Github } from "lucide-react";
 
 const Navbar = () => {
   return (
@@ -15,7 +16,12 @@ const Navbar = () => {
             <p>TrendScope</p>
           </Link>
         </div>
-        <ThemeSwitcher />
+        <div className="flex flex-row justify-center items-center gap-2">
+          <Link href="https://github.com/asshelke/trendscope" target="_blank">
+            <Github size={16} className={"text-muted-foreground"} />
+          </Link>
+          <ThemeSwitcher />
+        </div>
       </div>
     </nav>
   );

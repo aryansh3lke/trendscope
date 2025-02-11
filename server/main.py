@@ -51,7 +51,7 @@ except Exception as e:
 
 @app.on_event('startup')
 @repeat_every(seconds=60*60*4) # 4 hours
-def update_data(TRENDS_TO_FETCH=15):
+def update_data(TRENDS_TO_FETCH=10):
     print("Executing scheduled cron job at " + str(datetime.now().isoformat()) + "...")
 
     print("Scraping trend data...")
@@ -62,7 +62,6 @@ def update_data(TRENDS_TO_FETCH=15):
     sentiment_scores = analyze_sentiments(trends_data["data"])
     
     for rank in trends_data["data"]:
-        del trends_data["data"][rank]["tweets"]
         trends_data["data"][rank]["summary"] = trend_summaries[rank]
         trends_data["data"][rank]["sentiment_score"] = sentiment_scores[rank]
 

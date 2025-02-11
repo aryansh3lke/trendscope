@@ -10,12 +10,15 @@ SENTIMENT_SYSTEM_ROLE = """
 def analyze_sentiments(trend_data):
     sentiment_scores = {}
     for rank, trend in trend_data.items():
+        tweets = []
+        for tweet in trend["tweets"]:
+            tweets.append(tweet["text"])
         prompt = f"""
             A trend on X right now is called {trend["title"]}. Please assign a
             sentiment score to each tweet in the given list of strings from -1 
             to 1 and return the average of all sentiment scores. Your output 
             should be a single number rounded to 4 decimal places. Do not put
-            any text: {trend["tweets"]}
+            any text: {tweets}
         """
         sentiment_scores[rank] = str(round(float(ask_chatgpt(prompt, SENTIMENT_SYSTEM_ROLE)[0]) * 100, 4)) + "%"
     print("All sentiment scores succesfully calculated.")

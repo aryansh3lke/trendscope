@@ -11,10 +11,13 @@ SUMMARIZER_SYSTEM_ROLE = """
 def summarize_trends(trend_data):
     trend_summaries = {}
     for rank, trend in trend_data.items():
+        tweets = []
+        for tweet in trend["tweets"]:
+            tweets.append(tweet["text"])
         prompt = f"""
             A trend on X right now is called {trend["title"]}. Please summarize 
             this trend with this list of the top tweets given as a list of 
-            strings in about 100 words: {trend["tweets"]}
+            strings in about 100 words: {tweets}
         """
         trend_summaries[rank] = ask_chatgpt(prompt, SUMMARIZER_SYSTEM_ROLE)[0]
     print("All trends succesfully summarized.")

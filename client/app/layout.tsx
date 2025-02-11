@@ -4,7 +4,7 @@ import "./globals.css";
 
 import FaviconUpdater from "@/components/FaviconUpdater";
 import Navbar from "@/components/Navbar";
-import VantaBackground from "@/components/VantaBackground";
+import VantaDots from "@/components/VantaDots";
 
 import { getTrendsData } from "@/lib/data";
 import { TrendsProvider } from "@/context/TrendsContext";
@@ -47,7 +47,6 @@ export default async function RootLayout({
               <div className="flex-1 w-full flex flex-col gap-5 lg:gap-15 items-center">
                 <Navbar />
                 <div className="flex flex-col">
-                  <VantaBackground />
                   <div className="flex flex-col gap-20 max-w-5xl p-5">
                     {children}
                   </div>

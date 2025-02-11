@@ -8,7 +8,8 @@ Keep up to date with the latest X trends here: [trendscope.fyi](https://trendsco
 
 1. [Introduction](#introduction)
 2. [Tech Stack](#tech-stack)
-3. [Installation](#installation)
+3. [Usage](#usage)
+4. [Installation](#installation)
 
 ## Introduction
 
@@ -38,6 +39,16 @@ When a user loads the webpage, the client makes a request to fetch the data and 
 
 <b>Web Scraping:</b> Selenium\
 <b>Summarization/Sentiment Analysis:</b> OpenAPI (ChatGPT 3.5-turbo)
+
+## Usage
+
+#### 1. Quickly gain insight on the latest trends in the world to get a grasp on how people are feeling on the topic with a sentiment score and a summary to be up to date without having to scroll through many tweets.
+
+![homepage](https://github.com/user-attachments/assets/f0dfa1fb-f569-42d5-bae1-3c6f2f763854)
+
+#### 2. Click on one of the trends on the main page to see the full summary and access a carousel of the original tweets that were sniped and analyzed.
+
+![trendpage](https://github.com/user-attachments/assets/ae262330-fa64-47d7-9d56-c3ae225e5e65)
 
 ## Installation
 

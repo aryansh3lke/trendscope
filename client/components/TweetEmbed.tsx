@@ -49,9 +49,9 @@ const TweetEmbed = ({
           .then(() => {
             removeMargins();
             setIsMounted(true);
-
-            setLoadedIndexes((prev) => new Set(prev).add(index + 1));
-            setLoadedIndexes((prev) => new Set(prev).add(index - 1));
+            setLoadedIndexes((prev) =>
+              new Set(prev).add(index + 1).add(index - 1)
+            );
           });
       }
     }

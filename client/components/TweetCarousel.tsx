@@ -11,12 +11,14 @@ import { Card } from "@/components/ui/card";
 import TweetEmbed from "@/components/TweetEmbed";
 import TweetSkeleton from "@/components/TweetSkeleton";
 import { Tweet } from "@/lib/types";
+import { useTheme } from "next-themes";
 
 const TweetCarousel = ({ tweets }: { tweets: Tweet[] }) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState<number>(1);
   // Used to load current embed in carousel
   const [loadedIndexes, setLoadedIndexes] = useState<Set<number>>(new Set([0]));
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!api) return;
@@ -28,6 +30,10 @@ const TweetCarousel = ({ tweets }: { tweets: Tweet[] }) => {
       setCurrent(newIndex + 1);
     });
   }, [api]);
+
+  useEffect(() => {
+    setLoadedIndexes(new Set([current - 1]));
+  }, [theme]);
 
   return (
     <Card className="h-full">

@@ -37,7 +37,8 @@ The current version of the app is also severely limited in its webscraping capab
 ### DevOps
 
 <b>Cloud:</b> Vercel (Frontend), Railway.app (Backend)\
-<b>Containerization:</b> Docker (Backend)
+<b>Containerization:</b> Docker (Backend)\
+<b>DNS:</b> Porkbun
 
 ### Libraries
 

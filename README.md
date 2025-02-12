@@ -1,6 +1,6 @@
 # TrendScope
 
-An AI tool to gain insight into Twitter (X) trends through web-scraping, natural language processing, and abstractive summarization.
+An AI tool to gain insight into X (Twitter) trends through web-scraping, natural language processing, and abstractive summarization.
 
 Keep up to date with the latest X trends here: [trendscope.fyi](https://trendscope.fyi)
 

@@ -51,7 +51,7 @@ except Exception as e:
 
 @app.on_event('startup')
 @repeat_every(seconds=60*60*4) # 4 hours
-def update_data(TRENDS_TO_FETCH=15):
+def update_data(TRENDS_TO_FETCH=10):
     print("Executing scheduled cron job at " + str(datetime.now().isoformat()) + "...")
 
     print("Scraping trend data...")

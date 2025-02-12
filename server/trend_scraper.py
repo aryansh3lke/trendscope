@@ -132,10 +132,9 @@ def scrape_tweets():
             prev_count = len(scraped_tweets)
             
             # Update the set of scraped tweets
-            for idx, tweet in enumerate(tweets):
-                if tweet.text not in scraped_tweets and len(scraped_tweets) < MAX_TWEETS:
-                    scraped_tweets.add((tweet.text, links[idx].get_attribute("href")))
-                    #{"text": tweet.text, "url": links[idx].get_attribute("href")}
+            for i in range(min(len(tweets), len(links))):
+                if tweets[i].text not in scraped_tweets and len(scraped_tweets) < MAX_TWEETS:
+                    scraped_tweets.add((tweets[i].text, links[i].get_attribute("href")))
                     
             #     Scroll down to the last scraped tweet
             print("Tweets accumulated", len(scraped_tweets))

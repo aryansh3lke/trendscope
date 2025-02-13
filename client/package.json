@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "stack": "concurrently \"next dev\" \"cd ../server && fastapi dev main.py\"",
+    "init": "pnpm install && cd ../server && pip install -r requirements.txt",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"

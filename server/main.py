@@ -34,7 +34,7 @@ app.add_middleware(
 
 # Print system information
 print("Mode:", "Production" if PRODUCTION_MODE else "Development")
-print("Python Version:" , sys.version)
+print("Python Version:", sys.version)
 print("Chrome Version:", get_chrome_version())
 print("Chromedriver Version:", get_chromedriver_version())
 
@@ -49,8 +49,9 @@ except Exception as e:
     print(f"Failed to connect to MongoDB: {e}")
     sys.exit(1)  # Stop the app if DB connection fails
 
-@app.on_event('startup')
-@repeat_every(seconds=60*60*4) # 4 hours
+
+@app.on_event("startup")
+@repeat_every(seconds=60 * 60 * 48)  # 48 hours
 def update_data(TRENDS_TO_FETCH=10):
     print("Executing scheduled cron job at " + str(datetime.now().isoformat()) + "...")
 
@@ -60,7 +61,7 @@ def update_data(TRENDS_TO_FETCH=10):
     trend_summaries = summarize_trends(trends_data["data"])
     print("Anaylzing sentiments...")
     sentiment_scores = analyze_sentiments(trends_data["data"])
-    
+
     for rank in trends_data["data"]:
         trends_data["data"][rank]["summary"] = trend_summaries[rank]
         trends_data["data"][rank]["sentiment_score"] = sentiment_scores[rank]
@@ -71,11 +72,13 @@ def update_data(TRENDS_TO_FETCH=10):
         return {"message": "TrendData succesfully saved."}
     except Exception as e:
         return {"error": e}
-    
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-    
+
+
 @app.get("/api/fetch-data")
 async def fetch_data():
     try:

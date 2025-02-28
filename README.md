@@ -17,7 +17,7 @@ TrendScope is a full-stack (Next.js/FastAPI) web application that relies on Sele
 
 When a user loads the webpage, the client makes a request to fetch the data and populate the cards on the page. The client takes advantage of Next.js data caching and periodically makes requests every 10 minutes to fetch for any new data to the server and compares timestamps of the data on the client with the stored data in MongoDB to determine if new data needs to be fetched. Trends are periodically scheduled to be scraped with a cron job every 4 hours with FastAPI utilities.
 
-The Next.js frontend is deployed on [Vercel](https://vercel.com/) due to Vercel's robust integration for the framework, while the FastAPI backend is deployed on [Railway](https://railway.app/) since Vercel's serverless function limit is easily surpassed by the Python dependencies in this project. The MongoDB database is also within Railway as it has a very straightforward integration in comparison to MongoDB Atlas, which requires static bound IPs instead of just an environment variable.
+The Next.js frontend is deployed on Vercel due to its robust integration for the framework, while the FastAPI backend is deployed on Railway since Vercel's serverless function limit is easily surpassed by the Python dependencies in this project. The MongoDB database is also within Railway as it has a very straightforward integration in comparison to MongoDB Atlas, which requires static bound IPs instead of just an environment variable.
 
 The current version of the app is also severely limited in its webscraping capabilities since X has strict rate limits which are quickly hit by scraping even just half of the available trends. A rotating residential proxy is currently not being used due to it slow speed when used with the webdriver and the requirement of being logged into X with a legitimate account. Although this type of proxy would generally be used to avoid IP bans, X will easily be able to detect webscraping behavior when signing into the same account with different IPs. Multiple accounts could be created in theory and used in tandem with rotating proxies, but this would significantly increase the complexity of the app. The proxy is also an additonal cost to run this project. Currently Railway's lowest hobby tier and the domain for the website are already expensive enough to run this app for free.
 
@@ -25,25 +25,25 @@ The current version of the app is also severely limited in its webscraping capab
 
 ### Frontend
 
-<b>Framework:</b> Next.js (TypeScript)\
-<b>Styling:</b> Tailwind CSS, Shadcn UI, Vanta.js
+<b>Framework:</b> [Next.js (TypeScript)](https://nextjs.org)\
+<b>Styling:</b> [Tailwind CSS](https://tailwindcss.com), [Shadcn UI](https://ui.shadcn.com), [Vanta.js](https://www.vantajs.com)
 
 ### Backend
 
-<b>Framework:</b> FastAPI (Python)\
-<b>Database:</b> MongoDB\
-<b>APIs:</b> RESTful APIs
+<b>Framework:</b> [FastAPI (Python)](https://fastapi.tiangolo.com)\
+<b>Database:</b> [MongoDB](https://www.mongodb.com)
 
 ### DevOps
 
-<b>Cloud:</b> Vercel (Frontend), Railway.app (Backend)\
-<b>Containerization:</b> Docker (Backend)\
-<b>DNS:</b> Porkbun
+<b>Frontend Deployment:</b> [Vercel](https://vercel.com)\
+<b>Backend Deployment:</b> [Railway](https://railway.com)\
+<b>Containerization:</b> [Docker](https://www.docker.com)\
+<b>DNS Provider:</b> [Porkbun](https://porkbun.com)
 
 ### Libraries
 
-<b>Web Scraping:</b> Selenium\
-<b>Summarization/Sentiment Analysis:</b> OpenAPI (ChatGPT 3.5-turbo)
+<b>Web Scraping:</b> [Selenium Webdriver](https://www.selenium.dev/documentation/webdriver)\
+<b>Summarization/Sentiment Analysis:</b> [OpenAI API (ChatGPT 3.5-turbo)](https://github.com/openai/openai-python)
 
 ## Usage
 

@@ -49,11 +49,11 @@ The current version of the app is also severely limited in its webscraping capab
 
 #### 1. Quickly gain insight on the latest trends in the world to get a grasp on how people are feeling on the topic with a sentiment score and a summary to be up to date without having to scroll through many tweets.
 
-![homepage](https://github.com/user-attachments/assets/f0dfa1fb-f569-42d5-bae1-3c6f2f763854)
+![mainpage](https://github.com/user-attachments/assets/50e9af69-273f-4a43-a446-4c11a70922dd)
 
 #### 2. Click on one of the trends on the main page to see the full summary and access a carousel of the original tweets that were sniped and analyzed.
 
-![trendpage](https://github.com/user-attachments/assets/ae262330-fa64-47d7-9d56-c3ae225e5e65)
+![trendpage](https://github.com/user-attachments/assets/0c8e4f6b-5aee-4170-bbe6-5a2ece1acb67)
 
 ## Installation
 
@@ -63,18 +63,45 @@ Follow these steps to set up TrendScope locally:
 
 `git clone https://github.com/aryansh3lke/trendscope.git`
 
-#### 2. Navigate to the client directory (frontend)
+#### 2. Navigate to the server directory (backend)
 
-`cd client`
+`cd server`
 
-#### 3. Install all necessary Node and Python dependencies
+#### 3. Add the following environment variables in a .env file
+
+```
+# Webscraping Twitter Account Info
+TWITTER_EMAIL=<your-twitter-email>
+TWITTER_USERNAME=<your-twitter-username>
+TWITTER_PASSWORD=<your-twitter-password>
+
+# CHATGPT 3.5-Turbo OpenAI API Key
+OPENAI_API_KEY=<your-api-key>
+
+# MongoDB Compass NoSQL Database
+MONGO_URL=mongodb://localhost:27017/
+MONGO_DB=<your-db-name>
+MONGO_COLLECTION=<your-collection-name>
+
+# Deployment
+PRODUCTION=False
+FRONTEND_DOMAINS=http://localhost:3000
+```
+
+> IMPORTANT: You will need to create a Twitter account for webscraping and an OpenAI API Key to use ChatGPT. For local development, utilize MongoDB Compass to store the trends data by designating a database and collection for it. When deploying the FastAPI server in production, make sure to add the domain for the deployed frontend to `FRONTEND_DOMAINS` as a whitelist to allow CORS requests to follow through and set `PRODUCTION=True`. Additionally, change the `MONGO_URL` to access your deployed MongoDB instance.
+
+#### 4. Navigate to the client directory (frontend)
+
+`cd ../client`
+
+#### 5. Install all necessary Node and Python dependencies
 
 `pnpm run init`
 
-#### 4. Run the Next.js and FastAPI servers concurrently
+#### 6. Run the Next.js and FastAPI servers concurrently
 
 `pnpm run stack`
 
-#### 5. View the website locally
+#### 7. View the website locally
 
 http://localhost:3000

@@ -61,7 +61,7 @@ Follow these steps to set up TrendScope locally:
 
 #### 1. Clone the repository
 
-`git clone https://github.com/asshelke/trendscope.git`
+`git clone https://github.com/aryansh3lke/trendscope.git`
 
 #### 2. Navigate to the client directory (frontend)
 
